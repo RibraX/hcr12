@@ -1,0 +1,15 @@
+upstream sgh {
+server 127.0.0.1:8030;
+}
+server {
+listen 80 default;
+server_name sgh.hicaroaluminio.com.br;
+access_log /var/log/nginx/sgx.access.log;
+error_log /var/log/nginx/sgx.error.log;
+proxy_buffers 16 64k;
+proxy_buffer_size 128k;
+location / {
+proxy_pass http://sgh;
+proxy_next_upstream error timeout invalid_header http_500
+http_502 http_503 http_504;
+proxy_redirect off;
